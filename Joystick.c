@@ -47,10 +47,11 @@ typedef enum {
 	HATCHING, 
 	RELEASING, 
 	RAIDRESETTING, 
-	FLY
+	FLY,
+	BUG
 } Modes; 
 
-Modes mode = COLLECTING;
+Modes mode = BUG;
 int eggChecks = 330; 
 int numBoxes = 10; 
 
@@ -176,211 +177,114 @@ static const command buttons[] = {
 	{Y, 5}
 };
 
+// aabaaaaaxl
+
 // Main entry point.
 int main(void) {
 	// We'll start by performing hardware and peripheral setup.
 	SetupHardware();
 	// We'll then enable global interrupts for our use.
 	GlobalInterruptEnable();
-	bool setup = true; 
-	if (setup) {
-		command temp = {TRIGGERS, 50};
-		runCommand(temp);
-		command temp2 = {NOTHING, 5};
-		runCommand(temp2);
-		command temp3 = {A, 50};
-		runCommand(temp3);
-		setup = false; 
-		if (mode == COLLECTING) {
-			command temp4 = { UPRIGHT,    140};
-			runCommand(temp4);
-		}
-	}
-	if (mode == COLLECTING) {
-		int i; 
-		for (i = 0; i < eggChecks; i++) {
-			collect(); 
-		}
-	}
 
-	if(mode == FLY) {
-		runCommand(buttons[3]);
-		runCommand(nothing[20]);
-		runCommand(buttons[1]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		runCommand(nothing[2]);
-		
-		command a1 = {DOWN, 6};
-		runCommand(a1);
-		runCommand(nothing[1]);
-		command a2 = {RIGHT, 10};
-		runCommand(a2);
-		runCommand(buttons[1]);
-		runCommand(nothing[3]);
-		runCommand(buttons[1]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		command a3 = {PLUS, 5};
-		runCommand(a3);
-		runCommand(nothing[1]);
-		command a4 = {RIGHT, 300};
-		runCommand(a4);
-		command a5 = {L, 5}; 
-		runCommand(a5); 
-		runCommand(buttons[3]);
-		runCommand(nothing[20]);
-		runCommand(bMovement[0]);
-		runCommand(bMovement[1]);
-		runCommand(buttons[2]);
-		runCommand(nothing[2]);
-		putPokemonAway(1);
-		command a6 = {R, 5};
-		runCommand(a6);
-		int b; 
-		for (b = 0; b < 18; b++) {
-			command b1 = {B, 15};
-			runCommand(b1);
-			command b2 = {NOTHING, 5};
-			runCommand(b2);
-		}
-		mode = HATCHING; 
-	}
+    command temp = {TRIGGERS, 50};
+    runCommand(temp);
+    command temp2 = {NOTHING, 5};
+    runCommand(temp2);
+    command temp3 = {A, 50};
+    runCommand(temp3);
 
-	if (mode == HATCHING) {
-		int i = 0; 
-		for (i = 0; i < 11; i++) {
-			hatch(); 
-		}
-	}
+	    for (int i = 0; i < 300; i++) {
+	            // A
+            	runCommand(buttons[1]);
+            runCommand(nothing[4]);
+            runCommand(nothing[4]);
+            	// up
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
 
-	if (mode == RELEASING) {
-		//open box 
-		int i; 
-		for (i = 0; i < numBoxes; i++) {
-			if (boxOpened == false) {
-				runCommand(openPC[0]); 
-				runCommand(openPC[1]); 
-				runCommand(openPC[2]); 
-				runCommand(openPC[3]); 
-				runCommand(openPC[4]); 
-				runCommand(openPC[5]);
-				boxOpened = true;  
-			}
-			int col; 
-			for (col = 0; col < 6; col++) {
-				int row; 
-				for (row = 0; row < 5; row++) {
-					//release 
-					runCommand(release[0]);
-					runCommand(release[1]);
-					runCommand(release[2]);
-					runCommand(release[3]);
-					runCommand(release[4]);
-					runCommand(release[5]);
-					runCommand(release[6]);
-					runCommand(release[7]);
-					runCommand(release[8]);
-					runCommand(release[9]);
-					runCommand(release[10]);
-					runCommand(release[11]);
-					runCommand(release[12]);
-					runCommand(release[13]);
-					//go down 
+            	// up
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
 
-					runCommand(movePokemon[4]);
-					runCommand(movePokemon[5]); 
-				}
-				//go back to top and move over 
-					runCommand(movePokemon[4]);
-					runCommand(movePokemon[5]); 
-					runCommand(movePokemon[4]);
-					runCommand(movePokemon[5]); 
-					runCommand(movePokemon[2]);
-					runCommand(movePokemon[3]); 		
-			}
-			//Nextbox: 
-			command NextBox = {R, 5}; 
-			command pause = {NOTHING, 5};
-			runCommand(movePokemon[2]);
-			runCommand(movePokemon[3]); 
-			runCommand(NextBox);
-			runCommand(pause); 
-		}
-	}
+            	// A 回到坐骑形态
+            	runCommand(buttons[1]);
+            runCommand(nothing[4]);
+            runCommand(nothing[4]);
+            runCommand(nothing[2]);
 
-//a, a, a, a(wait 30), home
-//on home menu: down, right, right, right, right, a
-//Hold down for a fair amount of time lets say 40?
-//a, down, down, down, down, a
-//down, down, a
-//right, up, right, right, right, right, right, a, home, home, b(15), a, long wait (70)
-	if (mode == RAIDRESETTING) {
-		runCommand(buttons[1]);
-		runCommand(nothing[2]);
-		runCommand(buttons[1]);
-		runCommand(nothing[4]);
-		runCommand(nothing[1]);
-		runCommand(buttons[1]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		runCommand(nothing[3]);
-		runCommand(buttons[0]);
-		runCommand(nothing[2]);
-		runCommand(bMovement[2]);
-		runCommand(bMovement[1]);
-		runCommand(bMovement[1]);
-		runCommand(bMovement[1]);
-		runCommand(bMovement[1]);
-		runCommand(buttons[1]);
-		runCommand(nothing[2]);
-		command longDown = {DOWN, 80};
-		runCommand(longDown);
-		runCommand(buttons[1]);
-		runCommand(bMovement[2]);
-		runCommand(nothing[0]);
-		runCommand(bMovement[2]);
-		runCommand(nothing[0]);
-		runCommand(bMovement[2]);
-		runCommand(nothing[0]);
-		runCommand(bMovement[2]);
-		runCommand(nothing[1]);
-		runCommand(buttons[1]);
-		runCommand(nothing[2]);
-		runCommand(bMovement[2]);
-		runCommand(nothing[1]);
-		runCommand(bMovement[2]);
-		runCommand(nothing[1]);
-		runCommand(buttons[1]);
-		runCommand(nothing[1]);
-		runCommand(bMovement[1]);
-		runCommand(bMovement[0]);
-		runCommand(bMovement[1]);
-		runCommand(bMovement[1]);
-		runCommand(bMovement[1]);
-		runCommand(bMovement[1]);
-		runCommand(bMovement[1]);
-		runCommand(buttons[1]);
-		runCommand(nothing[2]);
-		runCommand(buttons[0]);
-		runCommand(nothing[3]);
-		runCommand(buttons[0]);
-		runCommand(nothing[3]);
-		runCommand(buttons[2]);
-		runCommand(nothing[4]);
-		runCommand(nothing[3]);
-		runCommand(buttons[1]);
-		runCommand(nothing[3]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-		runCommand(nothing[4]);
-	}
+            	// A 要让故勒顿变成坐骑形态吗
+            	runCommand(buttons[1]);
+            runCommand(nothing[4]);
+            runCommand(nothing[4]);
+            runCommand(nothing[2]);
 
+            	// A 是
+            	runCommand(buttons[1]);
+            runCommand(nothing[4]);
+            runCommand(nothing[4]);
+            runCommand(nothing[2]);
+
+            	// A 故勒顿变回坐骑形态了
+            	runCommand(buttons[1]);
+                runCommand(nothing[4]);
+                runCommand(nothing[4]);
+                runCommand(nothing[2]);
+
+            	// Up * 5
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
+
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
+
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
+
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
+
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
+
+            	// Right
+            	runCommand(bMovement[1]);
+            runCommand(nothing[2]);
+            	// A 盒子
+            	runCommand(buttons[1]);
+            runCommand(nothing[4]);
+            runCommand(nothing[4]);
+            runCommand(nothing[4]);
+
+            	// X
+            	runCommand(buttons[3]);runCommand(nothing[4]);
+            	// X
+            	runCommand(buttons[3]);runCommand(nothing[4]);
+            	// L
+            	command PRESS_L = {L, 5};
+                runCommand(PRESS_L);runCommand(nothing[4]);
+            	// A 要拿故勒顿怎么办
+            	runCommand(buttons[1]);
+            runCommand(nothing[4]);
+            runCommand(nothing[4]);
+            runCommand(nothing[2]);
+            	// Up
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
+            	// Up
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
+            	// Up
+            	runCommand(bMovement[0]);runCommand(nothing[2]);
+            	// A 收回持有物
+            	runCommand(buttons[1]);
+                runCommand(nothing[4]);
+            	// B
+            	runCommand(buttons[2]);
+                runCommand(nothing[4]);
+                runCommand(nothing[4]);
+                runCommand(nothing[4]);
+                runCommand(nothing[2]);
+            	// down * 4
+            	runCommand(bMovement[2]);runCommand(nothing[2]);
+            	runCommand(bMovement[2]);runCommand(nothing[2]);
+            	runCommand(bMovement[2]);runCommand(nothing[2]);
+            	runCommand(bMovement[2]);runCommand(nothing[2]);
+            	// Left
+            	runCommand(bMovement[3]);runCommand(nothing[2]);
+            	// Down
+            	runCommand(bMovement[2]);runCommand(nothing[2]);
+        }
 }
 
 void runCommandList(command moves[]) {
