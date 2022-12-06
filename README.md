@@ -1,4 +1,4 @@
-# Pokemon Scarlet and Violet Automation scripts
+# Pokemon Scarlet and Violet Automation Copy Bug Scripts
 
 A fork of an auto breeder script that was developed for pokemon sword and sheild. The automation exploits the 'copy bug' that exisits in pokemon scarlet and violet of version 1.0.0 and automates the process of copying any item for hundreds of times. e.g., One can copy and paste 999 master balls. 
 
@@ -36,9 +36,9 @@ Make sure that you have put Koradion/Miradion at the last postion of your follow
 
 #### Notice
 Sometimes the game would lag and therefore load for a bit longer than expected between two inputs, which results in the chaostic input from the controller.
-It is suggested that you take a look at the screen from time to time and save the game process before a possible error. Meanwhile, I will adjust the time interval between every two inputs to improve the program stability whilst maintain the efficiency.
+It is suggested that you take a look at the screen from time to time and save the game before a possible error. Meanwhile, I will adjust the time interval between every two inputs to improve the program stability whilst maintain the efficiency.
 
 #### Thanks
 
-Thanks to https://github.com/taingmat/pokemonss-autobreeder, this script is fully 
+Thanks to https://github.com/taingmat/pokemonss-autobreeder, this script is fully based on this project and I also refers to the great effort made by other authors that mentioned by taingmat.
 
